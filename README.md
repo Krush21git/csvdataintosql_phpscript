@@ -159,7 +159,7 @@ Create a PHP script that is executed form the command line. The script should:
 
 Output filename:
 
-displaynumberwithcondition.php
+foobar.php
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
