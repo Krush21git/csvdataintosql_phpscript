@@ -11,14 +11,20 @@ The PHP script handle the following criteria:
 
 • CSV file will contain user data and have three columns: name, surname, email (see table definition
 below)
+
 • CSV file will have an arbitrary list of users
+
 • Script will iterate through the CSV rows and insert each record into a dedicated MySQL database into
 the table “users”
+
 • The users database table will need to be created/rebuilt as part of the PHP script. This will be defined
 as a Command Line directive below
+
 • Name and surname field should be set to be capitalised e.g. from “john” to “John” before being
 inserted into DB
+
 • Emails need to be set to be lower case before being inserted into DB
+
 • The script should validate the email address before inserting, to make sure that it is valid (valid means
 that it is a legal email format, e.g. “xxxx@asdf@asdf” is not a legal format). In case that an email is
 invalid, no insert should be made to database and an error message should be reported to STDOUT.
@@ -26,8 +32,11 @@ invalid, no insert should be made to database and an error message should be rep
 # User Table
 
 The MySQL table should contain at least these fields:
+
 • name
+
 • surname
+
 • email (email should be set to a UNIQUE index).
 
 
@@ -36,21 +45,32 @@ The MySQL table should contain at least these fields:
 The PHP script should include these command line options (directives):
 
 • --file [csv file name] –	this is the name of the CSV to be parsed
+
 • --create_table 		 – 	this will cause the MySQL users table to be built (and no further action will be taken)
+
 • --dry_run 			 – 	this will be used with the --file directive in case we want to run the script but not insert into the DB. All 								other functions will be executed, but the database won't be altered
+
 • -u 					 –  MySQL username
+
 • -p 					 –  MySQL password
+
 • -h 					 –  MySQL host
+
 • --help 				 –  which will output the above list of directives with details.
 
 
 # Default connection details
+
 user : root
+
 password : blank ( not set )
+
 host : localhost or 127.0.0.1
+
 Your connection details may difer depending of your server configuration.
 
 # How to change default connection details?
+
 Edit from functions.php 
 
 
