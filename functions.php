@@ -49,3 +49,78 @@ function CreateDataBase() {
 }
 
 CreateDataBase();
+
+
+/*  
+
+    Create MySQL users data table  
+
+*/
+
+function CreateUserTable() {
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "usersDB";
+
+    try {
+        // Create connection
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Read the header of CSV for column names
+        if (($handle = fopen("users.csv", "r")) !== FALSE) {
+            $data = fgetcsv($handle, 1000, ",");
+            fclose($handle);
+        }
+
+        // SQL to create table
+        $sql = "CREATE TABLE IF NOT EXISTS users (
+            {$data[0]} VARCHAR(50) NOT NULL,
+            {$data[1]} VARCHAR(50) NOT NULL,
+            {$data[2]} VARCHAR(50) NOT NULL,
+            UNIQUE KEY {$data[2]} ({$data[2]})
+        )";
+
+        $conn->exec($sql);
+        echo "Table USERS created successfully\n";
+    } catch (PDOException $e) {
+        die("Error creating table: " . $e->getMessage());
+    }
+}
+
+CreateUserTable();
+
+/*    
+
+    show, checking and insert file content into DataBase  
+
+*/
+
+
+function PrintUserFile() {
+    $row = 0;
+    $filename = "users.csv";
+
+    try {
+        $file = new SplFileObject($filename, 'r');
+        $file->setFlags(SplFileObject::READ_CSV);
+
+        foreach ($file as $data) {
+            if ($row && !empty($data[0]) && $data[0] !== 'name') {
+                echo "\n";
+                // Make the first character uppercase
+                $data[0] = ucfirst(strtolower($data[0]));
+                $data[1] = ucfirst(strtolower($data[1]));
+                // Validate email
+                validemailaddress($data[2]);
+                // Insert data into DB
+                insertusertableRow($data[0], $data[1], $data[2]);
+            }
+            $row++;
+            echo implode(' ', $data) . " ";
+        }
+    } catch (Exception $e) {
+        die("Error reading file: " . $e->getMessage());
+    }
+}
